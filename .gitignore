@@ -1,0 +1,16 @@
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+
+# Editor directories and files
+.vscode
+
+# Compiled JavaScript files
+dist/**/*.js
+dist/**/*.js.map
+
+# Node.js dependency directory
+node_modules/
