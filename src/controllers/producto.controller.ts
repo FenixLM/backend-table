@@ -159,10 +159,11 @@ class ProductController {
 		}
 	}
 
-	async deleteProduct(req: Request, res: Response): Promise<void> {
+	async deleteProduct(req: Request, res: Response): Promise<any> {
 		try {
 			const productId = req.params._id;
-			await this.productModel.deleteProduct(productId);
+			const response = await this.productModel.deleteProduct(productId);
+			res.status(200).json(response);
 		} catch (error) {
 			console.error("Error al eliminar el producto:", error);
 			res.status(500).json({ message: "Error al eliminar el producto" });
