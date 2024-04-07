@@ -161,7 +161,7 @@ class ProductController {
 
 	async deleteProduct(req: Request, res: Response): Promise<void> {
 		try {
-			const productId = req.params.id;
+			const productId = req.params._id;
 			await this.productModel.deleteProduct(productId);
 		} catch (error) {
 			console.error("Error al eliminar el producto:", error);
