@@ -9,7 +9,9 @@ class ProductModel {
 	}
 
 	async getAllProducts(): Promise<ProductInterface[]> {
-		const products = await this.productsCollection.find().toArray();
+		const products = await this.productsCollection
+			.find({ estado: 1 })
+			.toArray();
 		return products;
 	}
 
@@ -41,11 +43,20 @@ class ProductModel {
 	}
 
 	async deleteProduct(productId: string): Promise<boolean> {
-		const result = await this.productsCollection.deleteOne({
-			_id: new ObjectId(productId),
-		});
+		const product: ProductInterface | null = {
+			estado: 0,
+		};
+		const updatedProduct = await this.productsCollection.findOneAndUpdate(
+			{ _id: new ObjectId(productId) },
+			{ $set: product },
+			{ returnDocument: "after" },
+		);
 
-		return result.deletedCount === 1;
+		if (!updatedProduct) {
+			return false;
+		}
+
+		return true;
 	}
 }
 

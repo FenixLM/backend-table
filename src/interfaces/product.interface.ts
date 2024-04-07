@@ -14,6 +14,7 @@ export interface ProductInterface {
 	// propiedades almacenar la fecha de registro y ultima actualización
 	fechaRegistro?: Date;
 	fechaActualizacion?: Date;
+	estado?: number;
 }
 
 export interface historyChangeProductInterface {

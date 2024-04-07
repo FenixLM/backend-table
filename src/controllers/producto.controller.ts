@@ -67,6 +67,7 @@ class ProductController {
 			const product: ProductInterface = req.body;
 			product.fechaRegistro = fechaActual;
 			product.fechaActualizacion = fechaActual;
+			product.estado = 1;
 
 			console.log("createProduct -> product", product);
 
@@ -161,14 +162,7 @@ class ProductController {
 	async deleteProduct(req: Request, res: Response): Promise<void> {
 		try {
 			const productId = req.params.id;
-			const result = await this.productModel.deleteProduct(productId);
-
-			if (!result) {
-				res.status(404).json({ message: "Producto no encontrado" });
-				return;
-			}
-
-			res.status(200).json({ message: "Producto eliminado correctamente" });
+			await this.productModel.deleteProduct(productId);
 		} catch (error) {
 			console.error("Error al eliminar el producto:", error);
 			res.status(500).json({ message: "Error al eliminar el producto" });
