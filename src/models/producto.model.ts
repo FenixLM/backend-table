@@ -14,7 +14,9 @@ class ProductModel {
 	}
 
 	async createProduct(product: ProductInterface): Promise<ProductInterface> {
-		await this.productsCollection.insertOne(product);
+		const result = await this.productsCollection.insertOne(product);
+
+		product._id = result.insertedId;
 		return product;
 	}
 

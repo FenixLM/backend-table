@@ -2,14 +2,20 @@ import { Request, Response } from "express";
 import ProductModel from "../models/producto.model";
 import { Db } from "mongodb";
 import ImageUploadService from "../services/ImageUpload.service";
-import { ProductInterface } from "../interfaces/product.interface";
+import {
+	ProductInterface,
+	historyChangeProductInterface,
+} from "../interfaces/product.interface";
+import HistoryChangeProductModel from "../models/historyChangeProduct.model";
 
 class ProductController {
 	private imageUploadService: ImageUploadService;
 	private productModel: ProductModel;
+	private historyChangeProductModel: HistoryChangeProductModel;
 
 	constructor(db: Db) {
 		this.productModel = new ProductModel(db);
+		this.historyChangeProductModel = new HistoryChangeProductModel(db);
 		this.imageUploadService = new ImageUploadService();
 	}
 
@@ -56,7 +62,12 @@ class ProductController {
 			if (req.body.etiquetas) {
 				req.body.etiquetas = req.body.etiquetas.split(",");
 			}
+			const fechaActual = new Date();
+
 			const product: ProductInterface = req.body;
+			product.fechaRegistro = fechaActual;
+			product.fechaActualizacion = fechaActual;
+
 			console.log("createProduct -> product", product);
 
 			// Si hay una imagen en la solicitud, utiliza el servicio de subida de imágenes
@@ -68,10 +79,21 @@ class ProductController {
 			}
 
 			// Crea el producto en la base de datos
-			await this.productModel.createProduct(product);
+			const dataProductInsert = await this.productModel.createProduct(product);
+
+			const registroData: historyChangeProductInterface = {
+				productId: dataProductInsert._id,
+				precio: dataProductInsert.precio,
+				stock: dataProductInsert.stock,
+				fecha: fechaActual,
+			};
+
+			await this.historyChangeProductModel.createHistoryChangeProduct(
+				registroData,
+			);
 
 			// Responde con el producto creado
-			res.status(201).json(product);
+			res.status(201).json(dataProductInsert);
 		} catch (error) {
 			console.error("Error al crear un nuevo producto:", error);
 			res.status(500).json({ message: "Error al crear un nuevo producto" });
@@ -80,6 +102,7 @@ class ProductController {
 
 	async updateProduct(req: Request, res: Response): Promise<void> {
 		try {
+			const fechaActual = new Date();
 			const productId = req.params._id;
 
 			if (req.body.etiquetas) {
@@ -87,6 +110,7 @@ class ProductController {
 			}
 
 			const updatedProductData: ProductInterface = req.body;
+			updatedProductData.fechaActualizacion = fechaActual;
 
 			console.log("updateProduct -> updatedProductData", updatedProductData);
 			console.log("updateProduct -> productId", productId);
@@ -99,11 +123,35 @@ class ProductController {
 				updatedProductData.imagen = imageUrl;
 			}
 
+			const productBefore = await this.productModel.getProductById(productId);
+
 			// Actualiza el producto en la base de datos
-			await this.productModel.updateProduct(productId, updatedProductData);
+			const productUpdate = await this.productModel.updateProduct(
+				productId,
+				updatedProductData,
+			);
+
+			console.log("updateProduct -> productUpdate", productUpdate);
+
+			if (
+				productBefore &&
+				productUpdate &&
+				(productBefore.precio !== updatedProductData.precio ||
+					productBefore.stock !== updatedProductData.stock)
+			) {
+				const registroData: historyChangeProductInterface = {
+					productId: productUpdate._id,
+					precio: productUpdate.precio,
+					stock: productUpdate.stock,
+					fecha: fechaActual,
+				};
+				await this.historyChangeProductModel.createHistoryChangeProduct(
+					registroData,
+				);
+			}
 
 			// Responde con el producto actualizado
-			res.status(200).json(updatedProductData);
+			res.status(200).json(productUpdate);
 		} catch (error) {
 			console.error("Error al actualizar el producto:", error);
 			res.status(500).json({ message: "Error al actualizar el producto" });
