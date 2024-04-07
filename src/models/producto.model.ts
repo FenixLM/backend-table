@@ -1,4 +1,4 @@
-import { Collection, Db } from "mongodb";
+import { Collection, Db, ObjectId } from "mongodb";
 import { ProductInterface } from "../interfaces/product.interface";
 
 class ProductModel {
@@ -16,6 +16,34 @@ class ProductModel {
 	async createProduct(product: ProductInterface): Promise<ProductInterface> {
 		await this.productsCollection.insertOne(product);
 		return product;
+	}
+
+	async getProductById(productId: string): Promise<ProductInterface | null> {
+		const product = await this.productsCollection.findOne({
+			_id: new ObjectId(productId),
+		});
+		return product;
+	}
+
+	async updateProduct(
+		productId: string,
+		product: ProductInterface,
+	): Promise<ProductInterface | null> {
+		const updatedProduct = await this.productsCollection.findOneAndUpdate(
+			{ _id: new ObjectId(productId) },
+			{ $set: product },
+			{ returnDocument: "after" },
+		);
+
+		return updatedProduct;
+	}
+
+	async deleteProduct(productId: string): Promise<boolean> {
+		const result = await this.productsCollection.deleteOne({
+			_id: new ObjectId(productId),
+		});
+
+		return result.deletedCount === 1;
 	}
 }
 
