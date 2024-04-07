@@ -3,6 +3,7 @@ import { ProductInterface } from "../interfaces/product.interface";
 
 class ProductModel {
 	private productsCollection!: Collection<ProductInterface>;
+
 	constructor(db: Db) {
 		this.productsCollection = db.collection("products");
 	}
