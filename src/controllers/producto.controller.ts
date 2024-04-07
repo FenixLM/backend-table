@@ -53,7 +53,11 @@ class ProductController {
 
 	async createProduct(req: Request, res: Response): Promise<void> {
 		try {
+			if (req.body.etiquetas) {
+				req.body.etiquetas = req.body.etiquetas.split(",");
+			}
 			const product: ProductInterface = req.body;
+			console.log("createProduct -> product", product);
 
 			// Si hay una imagen en la solicitud, utiliza el servicio de subida de imágenes
 			if (req.files && req.files.imageFile) {
@@ -77,7 +81,15 @@ class ProductController {
 	async updateProduct(req: Request, res: Response): Promise<void> {
 		try {
 			const productId = req.params._id;
+
+			if (req.body.etiquetas) {
+				req.body.etiquetas = req.body.etiquetas.split(",");
+			}
+
 			const updatedProductData: ProductInterface = req.body;
+
+			console.log("updateProduct -> updatedProductData", updatedProductData);
+			console.log("updateProduct -> productId", productId);
 
 			// Verifica si hay una imagen en la solicitud y actualiza la imagen si es necesario
 			if (req.files && req.files.imageFile) {

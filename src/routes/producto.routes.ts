@@ -22,6 +22,18 @@ class ProductRoutes {
 			"/products",
 			this.productController.createProduct.bind(this.productController),
 		);
+		this.router.get(
+			"/products/:_id",
+			this.productController.getProductById.bind(this.productController),
+		);
+		this.router.put(
+			"/products/:_id",
+			this.productController.updateProduct.bind(this.productController),
+		);
+		this.router.delete(
+			"/products/:_id",
+			this.productController.deleteProduct.bind(this.productController),
+		);
 	}
 }
 
