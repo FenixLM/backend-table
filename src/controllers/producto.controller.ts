@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import ProductModel from "../models/producto.model";
 import { Db } from "mongodb";
 import ImageUploadService from "../services/ImageUpload.service";
+import { ProductInterface } from "../interfaces/product.interface";
 
 class ProductController {
 	private imageUploadService: ImageUploadService;
@@ -52,14 +53,14 @@ class ProductController {
 
 	async createProduct(req: Request, res: Response): Promise<void> {
 		try {
-			const product = req.body;
+			const product: ProductInterface = req.body;
 
 			// Si hay una imagen en la solicitud, utiliza el servicio de subida de imágenes
 			if (req.files && req.files.imageFile) {
 				const imageUrl = await this.imageUploadService.uploadImage(
 					req.files.imageFile,
 				);
-				product.image = imageUrl;
+				product.imagen = imageUrl;
 			}
 
 			// Crea el producto en la base de datos
@@ -75,15 +76,15 @@ class ProductController {
 
 	async updateProduct(req: Request, res: Response): Promise<void> {
 		try {
-			const productId = req.params.productId;
-			const updatedProductData = req.body;
+			const productId = req.params._id;
+			const updatedProductData: ProductInterface = req.body;
 
 			// Verifica si hay una imagen en la solicitud y actualiza la imagen si es necesario
 			if (req.files && req.files.imageFile) {
 				const imageUrl = await this.imageUploadService.uploadImage(
 					req.files.imageFile,
 				);
-				updatedProductData.image = imageUrl;
+				updatedProductData.imagen = imageUrl;
 			}
 
 			// Actualiza el producto en la base de datos
