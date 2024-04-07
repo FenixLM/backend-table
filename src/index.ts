@@ -1,8 +1,11 @@
 import express from "express";
 import cors from "cors";
 import * as dotenv from "dotenv";
+import * as AWS from "aws-sdk";
 import MongoDBDatabase from "./db/mongodb";
 import ProductRoutes from "./routes/producto.routes";
+import ImageRoutes from "./routes/image.routes";
+import fileUpload from "express-fileupload";
 
 dotenv.config();
 
@@ -17,8 +20,15 @@ const app = express();
 // Middleware
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(fileUpload());
 
 const PORT = process.env.PORT || 3000;
+
+AWS.config.update({
+	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+	region: process.env.AWS_REGION,
+});
 
 const db = new MongoDBDatabase();
 
@@ -31,6 +41,8 @@ db.connect()
 		console.error("Error connecting to MongoDB:", err);
 		process.exit(1); // Salir del proceso con un error
 	});
+
+app.use("/api", new ImageRoutes().router);
 
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);
