@@ -9,4 +9,6 @@ export interface ProductInterface {
 	etiquetas?: string[];
 	precio?: number;
 	stock?: number;
+	//  propiedad para la imagen del producto
+	imageFile?: any;
 }

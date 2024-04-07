@@ -12,7 +12,7 @@ class ImageController {
 			}
 
 			const s3 = new AWS.S3();
-			const bucketName = "test-files-aws-felixlm";
+			const bucketName = process.env.AWS_BUCKET_NAME as string;
 			const image: any = req.files.image;
 			const uploadPath = path.join(__dirname, "..", "uploads", image.name);
 
