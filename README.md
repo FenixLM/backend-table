@@ -26,7 +26,11 @@ Antes de ejecutar la aplicación, asegúrate de configurar las variables de ento
     AWS_REGION=TU_REGION
     AWS_BUCKET_NAME=NOMBRE_BUCKET
 
-puedes encontrar un archivo de ejemplo llamado env.dev, crear el archivo .env a la misma altura del archivo .env.dev
+puedes encontrar un archivo de ejemplo llamado env.dev, crear el archivo `.env` a la misma altura del archivo `.env.dev`
+
+## IMPORTANTE
+
+Para poder enviar y leer las imágenes almacenadas en Amazon S3, necesitarás una cuenta de Amazon AWS y obtener las credenciales de acceso (Access Key ID y Secret Access Key). Estas credenciales deben configurarse como variables de entorno en el archivo `.env`.
 
 ## Uso
 
