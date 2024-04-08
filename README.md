@@ -35,7 +35,8 @@ Para poder enviar y leer las imágenes almacenadas en Amazon S3, necesitarás un
 Para configurar la conexión a la base de datos MongoDB, asegúrate de tener una cuenta de mongoDB. Luego, establece las variables de entorno `MONGO_USER`, `MONGO_PASSWORD` con la información de tu instancia de MongoDB.
 
 CAMBIANDO LA URI
-const uri = `mongodb+srv://${this.mongoUser}:${this.mongoPassword}@apiresttest.hdeslhu.mongodb.net/?retryWrites=true&w=majority&appName=ApiRestTest`
+
+    const uri = `mongodb+srv://${this.mongoUser}:${this.mongoPassword}@apiresttest.hdeslhu.mongodb.net/?retryWrites=true&w=majority&appName=ApiRestTest`
 
 ubicada en: `\src\db\mongodb.ts`
 
