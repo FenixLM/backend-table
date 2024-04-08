@@ -32,6 +32,18 @@ puedes encontrar un archivo de ejemplo llamado env.dev, crear el archivo `.env` 
 
 Para poder enviar y leer las imágenes almacenadas en Amazon S3, necesitarás una cuenta de Amazon AWS y obtener las credenciales de acceso (Access Key ID y Secret Access Key). Estas credenciales deben configurarse como variables de entorno en el archivo `.env`.
 
+Para configurar la conexión a la base de datos MongoDB, asegúrate de tener una cuenta de mongoDB. Luego, establece las variables de entorno `MONGO_USER`, `MONGO_PASSWORD` con la información de tu instancia de MongoDB.
+
+CAMBIANDO LA URI
+const uri = `mongodb+srv://${this.mongoUser}:${this.mongoPassword}@apiresttest.hdeslhu.mongodb.net/?retryWrites=true&w=majority&appName=ApiRestTest`
+
+ubicada en: `\src\db\mongodb.ts`
+
+y dentro en la linea:
+this.db = this.client.db("sample_mflix");
+
+cambiar por el nombre de la DB
+
 ## Uso
 
 Una vez que hayas instalado las dependencias y configurado las variables de entorno, puedes ejecutar la aplicación con el siguiente comando:
