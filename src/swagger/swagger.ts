@@ -21,7 +21,6 @@ const options: swaggerJSDoc.Options = {
 						nombre: {
 							type: "string",
 							description: "Nombre del producto",
-							value: "Felix",
 						},
 						descripcion: {
 							type: "string",

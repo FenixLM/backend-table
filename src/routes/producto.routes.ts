@@ -16,8 +16,17 @@ class ProductRoutes {
 	private routes() {
 		/**
 		 * @swagger
+		 * tags:
+		 *   name: Products
+		 *   description: Operaciones relacionadas con productos
+		 */
+
+		/**
+		 * @swagger
 		 * /api/products:
 		 *   get:
+		 *     tags:
+		 *       - Products
 		 *     description: Obtener todos los productos
 		 *     responses:
 		 *       200:
@@ -32,6 +41,8 @@ class ProductRoutes {
 		 * @swagger
 		 * /api/products:
 		 *   post:
+		 *     tags:
+		 *       - Products
 		 *     description: Crear un nuevo producto
 		 *     requestBody:
 		 *       required: true
@@ -88,6 +99,8 @@ class ProductRoutes {
 		 * @swagger
 		 * /api/products/{_id}:
 		 *   get:
+		 *     tags:
+		 *       - Products
 		 *     description: Obtener un producto por su ID
 		 *     parameters:
 		 *       - in: path
@@ -109,6 +122,8 @@ class ProductRoutes {
 		 * @swagger
 		 * /api/products/{_id}:
 		 *   put:
+		 *     tags:
+		 *       - Products
 		 *     description: Actualizar un producto existente por su ID
 		 *     parameters:
 		 *       - in: path
@@ -172,6 +187,8 @@ class ProductRoutes {
 		 * @swagger
 		 * /api/products/{_id}:
 		 *   delete:
+		 *     tags:
+		 *       - Products
 		 *     description: Eliminar un producto por su ID (cambia de estado a 0)
 		 *     parameters:
 		 *       - in: path
