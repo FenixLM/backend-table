@@ -31,7 +31,7 @@ class ProductController {
 
 	async getProductById(req: Request, res: Response): Promise<void> {
 		try {
-			const productId = req.params.id;
+			const productId = req.params._id;
 			const product = await this.productModel.getProductById(productId);
 
 			if (!product) {

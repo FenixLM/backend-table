@@ -2,6 +2,10 @@ import express from "express";
 import cors from "cors";
 import * as dotenv from "dotenv";
 import * as AWS from "aws-sdk";
+
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./swagger/swagger";
+
 import MongoDBDatabase from "./db/mongodb";
 import ProductRoutes from "./routes/producto.routes";
 import ImageRoutes from "./routes/image.routes";
@@ -29,6 +33,8 @@ AWS.config.update({
 	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 	region: process.env.AWS_REGION,
 });
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const db = new MongoDBDatabase();
 
